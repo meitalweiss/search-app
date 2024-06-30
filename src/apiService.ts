@@ -4,7 +4,6 @@ export type Categories = Record<string, string>;
 
 const fetchSearchResults = async (category: string, searchTerm: string): Promise<Result[]> => {
     try {
-        debugger;
         const response = await fetch(`https://swapi.dev/api/${category}/?search=${searchTerm}`);
         
         if (!response.ok) {

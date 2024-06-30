@@ -1,22 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import SearchInput from './components/SearchInput/SearchInput';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import SearchInput from './components/searchInput/SearchInput';
 import Loader from './components/Loader';
+import { StarWarsContext } from './StarWarsContext';
 import { fetchSearchResults, fetchAllCategories } from './apiService'; 
 import type { Result } from './apiService';
 import ResultList from './ResultList';
 import { Wrapper, LoaderContainer } from './SearchPage.styles';
 
-interface SearchPageProps {
-    // Add any props needed for SearchPage
-}
-
-const SearchPage: React.FC<SearchPageProps> = () => {
+const SearchPage: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [categories, setCategories] = useState<string[]>([]);
-    const [results, setResults] = useState({});
+    // const [results, setResults] = useState({});
+    const { results, setResults } = useContext(StarWarsContext);
     const showResults = useRef(false);
     const [loading, setLoading] = useState<boolean>(false);
-    console.log('results', results)
 
     useEffect(() => {   
         const fetchCategories = async () => { // Create a new async function: clear
@@ -52,6 +49,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
             
             setResults(resultData);
             showResults.current = true;
+            // setContextResults(resultData);
         } catch (error) {
             console.log('error', error);
             // setError(error.message);
@@ -70,50 +68,10 @@ const SearchPage: React.FC<SearchPageProps> = () => {
             {loading && <LoaderContainer>
                 <Loader />
             </LoaderContainer>}
-            {showResults.current && <ResultList categories={categories} results={results} loading={loading} maxItems={3} />}
+            {showResults.current &&
+                <ResultList categories={categories} results={results} loading={loading} maxItems={3} />
+            }
         </Wrapper>
-    );
-};
-
-// interface Result {
-//     name: string;
-//     url: string;
-//     // Add more fields based on your API response structure
-// }
-
-// interface ResultsListProps {
-//     results: Result[];
-// }
-
-// const ResultsList: React.FC<ResultsListProps> = ({ results }) => {
-//     return (
-//         <div>
-
-//             {/* <CategoryResults category="films" results={results.films} />
-//             <CategoryResults category="people" results={results.people} />
-//             Add more categories as needed */}
-//         </div>
-//     );
-// };
-
-interface CategoryResultsProps {
-    category: string;
-    results: Result[];
-}
-
-const CategoryResults: React.FC<CategoryResultsProps> = ({ category, results }) => {
-    console.log('category', category);
-    console.log('results', results);
-    return (
-        <div>
-            <h2>{category}</h2>
-            <ul>
-                {results?.slice(0, 3).map(result => (
-                    <li key={result.url}>{result.name}</li>
-                ))}
-            </ul>
-            <button>View All {category}</button>
-        </div>
     );
 };
 
