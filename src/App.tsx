@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchPage from './SearchPage';
+import SearchPage from './pages/search/SearchPage';
 import { Wrapper } from './App.styles';
-import PeoplePage from './PeoplePage';
+import PeoplePage from './pages/people/PeoplePage';
 import { StarWarsProvider } from './StarWarsContext'; // Import StarWarsProvider
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 
